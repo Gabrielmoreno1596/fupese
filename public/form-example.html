@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacto FUPESE — Demo</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px}
+    .row{margin:8px 0}
+    input,textarea,button{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px}
+    button{cursor:pointer}
+    .ok{color:#0a7f2e}
+    .error{color:#bf0000}
+  </style>
+  <!-- reCAPTCHA V2 (checkbox) -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+  <h1>Formulario de contacto — FUPESE</h1>
+  <form id="fupese-contact" method="POST" action="/public/procesar-formulario.php">
+    <!-- Inserta el token CSRF desde PHP real: -->
+    <!-- <?php require_once __DIR__.'/../lib/Csrf.php'; echo \FUPESE\Security\Csrf::field(); ?> -->
+    <input type="hidden" name="csrf_token" value="__REEMPLAZA_EN_PHP__">
+    <div class="row"><input name="nombre" placeholder="Tu nombre" required></div>
+    <div class="row"><input type="email" name="correo" placeholder="Correo" required></div>
+    <div class="row"><input name="telefono" placeholder="Teléfono (opcional)"></div>
+    <div class="row"><textarea name="mensaje" placeholder="Escribe tu mensaje" rows="5" required></textarea></div>
+    <div class="row">
+      <!-- reCAPTCHA V2 widget -->
+      <div class="g-recaptcha" data-sitekey="__SITE_KEY__"></div>
+    </div>
+    <div class="row"><button type="submit">Enviar</button></div>
+  </form>
+  <p id="status"></p>
+
+<script>
+const form = document.getElementById('fupese-contact');
+const statusEl = document.getElementById('status');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  statusEl.textContent = 'Enviando…';
+  statusEl.className = '';
+  try {
+    const fd = new FormData(form);
+    const res = await fetch(form.action, { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.ok) {
+      statusEl.textContent = data.message || 'Enviado.';
+      statusEl.className = 'ok';
+      form.reset();
+      if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
+    } else {
+      statusEl.textContent = data.error || 'No se pudo enviar.';
+      statusEl.className = 'error';
+    }
+  } catch (err) {
+    statusEl.textContent = 'Error de red.';
+    statusEl.className = 'error';
+  }
+});
+</script>
+</body>
+</html>

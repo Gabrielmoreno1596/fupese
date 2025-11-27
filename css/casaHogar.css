@@ -1,0 +1,109 @@
+.hogar-adultos__hero-alt {
+  background: #fdfdfd;
+  padding: 3rem 1rem 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.hero__contenido {
+  max-width: 800px;
+  margin: 2rem auto;
+  margin-bottom: -1rem;
+}
+
+.hero__logo-container {
+  width: 230px;
+  height: 230px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  border: 5px solid #c2a570; /* dorado suave */
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.hero__logo {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.hero__titulo {
+  font-size: 2.2rem;
+  font-family: 'Georgia', serif;
+  color: #5b4b39;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.hero__divider {
+  width: 80px;
+  height: 3px;
+  background-color: #c2a570;
+  border: none;
+  margin: 1rem auto 0;
+}
+
+  
+  .hogar-adultos__descripcion {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+  }
+  
+  .hogar-adultos__cita {
+    font-style: italic;
+    margin-top: 2rem;
+    background: #f9f9f9;
+    padding: 1rem;
+    border-left: 5px solid #aaa;
+  }
+  
+  .hogar-adultos__galeria {
+    padding: 3rem 1rem;
+    background: #f8f5f2;
+    text-align: center;
+  }
+  
+  .hogar-adultos__galeria h2 {
+    font-family: 'Georgia', serif;
+    color: #5b4b39;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .swiper {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    padding-bottom: 2rem;
+  }
+  
+  .swiper-slide {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .swiper-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .slide__info {
+    padding: 1rem;
+    background: #fff7f0;
+  }
+  
+  .slide__info h3 {
+    color: #5b4b39;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  

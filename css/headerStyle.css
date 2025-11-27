@@ -1,0 +1,280 @@
+/* =========================================================
+   FUPESE — HEADER/NAV CONSISTENTE (2025-10-29)
+   - Fondo blanco (desktop y mobile)
+   - No activos: negro | Activo: verde FUPESE
+   - Sin cursivas
+   - Sin overflow horizontal
+   ========================================================= */
+
+/* ---- Reseteos útiles ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+}
+body {
+  margin: 0;
+  overflow-x: hidden;
+} /* Evita scrollbar horizontal si algún hijo se pasa por 1px */
+
+/* ---- Tokens ---- */
+:root {
+  --verde-fupese: #138f2f;
+  --blanco: #ffffff;
+  --ink: #000000;
+  --menu-pad-inline: clamp(
+    1rem,
+    4vw,
+    3rem
+  ); /* evita desbordes por padding fijo */
+}
+
+/* ---- Header ---- */
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4.5rem;
+  padding: 0.75rem var(--menu-pad-inline);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+
+  background-color: var(--blanco);
+  backdrop-filter: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Logo */
+.header__logo img {
+  height: 3.1rem;
+  display: block;
+}
+
+/* ---- Navegación (desktop) ---- */
+.header__nav {
+  background-color: var(--blanco);
+}
+.header__nav .nav__menu {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Enlace base: negro (no activo) */
+.nav__item a {
+  position: relative;
+  display: inline-block;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+  font-style: normal; /* quitar cursiva */
+  transition: color 0.25s ease;
+  line-height: 1.2;
+  white-space: nowrap; /* evita saltos raros en items cortos */
+  padding: 0.35rem 0;
+}
+
+/* Subrayado animado (verde) */
+.nav__item a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: var(--verde-fupese);
+  transition: width 0.25s ease-in-out;
+}
+.nav__item a:hover {
+  color: var(--verde-fupese);
+}
+.nav__item a:hover::after {
+  width: 100%;
+}
+
+/* Estado ACTIVO (verde) */
+.nav__item--active a,
+.nav__item--active-inicio a {
+  color: var(--verde-fupese) !important;
+  font-weight: 700;
+}
+.nav__item--active a::after,
+.nav__item--active-inicio a::after {
+  width: 100%;
+}
+
+/* ---- Submenú (desktop) ---- */
+.nav__item--submenu {
+  position: relative;
+}
+
+.nav__submenu {
+  position: absolute;
+  top: 100%;
+  left: auto;
+  right: 0; /* asegura que no se corte en el borde derecho */
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 220px;
+  max-width: min(90vw, 320px); /* evita desbordes */
+  padding: 0.6rem;
+  margin: 0;
+  list-style: none;
+  text-align: left;
+  background: var(--blanco);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 999;
+}
+.nav__item--submenu:hover .nav__submenu,
+.nav__submenu:hover {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav__submenu li a {
+  color: var(--ink);
+  padding: 0.35rem 0.6rem;
+  position: relative;
+  transition: color 0.2s ease;
+  font-style: normal; /* sin cursiva también aquí */
+}
+.nav__submenu li a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--verde-fupese);
+  transition: width 0.25s ease-in-out;
+}
+.nav__submenu li a:hover::after {
+  width: 100%;
+}
+
+/* ---- Hamburger ---- */
+.hamburger {
+  display: none;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 1001;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.hamburger span {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--ink); /* negro para coherencia */
+  transition: all 0.3s ease;
+}
+.hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---- Accesibilidad ---- */
+.header a:focus-visible {
+  outline: 2px solid var(--verde-fupese);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .header {
+    padding: clamp(0.75rem, 3vw, 1.1rem)
+      clamp(1rem, 6vw, 2.25rem); /* compacto y sin desbordes */
+  }
+
+  /* Panel desplegable */
+  .header__nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background: var(--blanco);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  .header__nav.active {
+    display: flex;
+  }
+
+  .responsive-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1rem 0;
+    width: 100%;
+  }
+
+  .nav__item {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Colores coherentes en mobile */
+  .nav__item a {
+    color: var(--ink) !important;
+    font-family: system-ui;
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: normal; /* sin cursiva */
+  }
+  .nav__item--active a,
+  .nav__item--active-inicio a {
+    color: var(--verde-fupese) !important;
+    font-weight: 700;
+  }
+
+  /* Submenú en columna, sin sombra extra */
+  .nav__submenu {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    background: transparent;
+    box-shadow: none;
+    width: 100%;
+    max-width: none;
+  }
+  .nav__submenu li {
+    text-align: center;
+  }
+  .nav__submenu li a {
+    color: var(--ink) !important;
+    padding: 0.5rem 0;
+  }
+}

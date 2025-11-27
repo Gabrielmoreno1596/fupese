@@ -1,0 +1,14 @@
+{
+  "name": "fupese/site",
+  "description": "Sitio FUPESE - manejo de formularios seguro",
+  "type": "project",
+  "require": {
+    "php": ">=8.0",
+    "phpmailer/phpmailer": "^6.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "FUPESE\\": "lib/"
+    }
+  }
+}
