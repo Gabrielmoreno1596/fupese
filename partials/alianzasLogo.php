@@ -18,7 +18,7 @@
     <div class="swiper-wrapper">
       <div class="swiper-slide"><img src="https://res.cloudinary.com/dcsjgrfb8/image/upload/v1750862206/alternativaDigital_gus4pa.webp" alt="Alternativa Digital"></div>
       <div class="swiper-slide"><img src="https://res.cloudinary.com/dcsjgrfb8/image/upload/v1750862206/MinesterioDesarrolloSocial_ykzven.webp" alt="Ministerio de Desarrollo Social"></div>
-      <div class="swiper-slide"><img src="https://res.cloudinary.com/dcsjgrfb8/image/upload/v1750862205/Fundacion-siman_jwtrxe.webp" alt="Fundación Simán"></div>
+      <div class="swiper-slide"><img src="https://res.cloudinary.com/dcsjgrfb8/image/upload/v1764217155/FUPESE-ALIANZAS_b1kgus.png" alt="Global Alimentos"></div>
       <div class="swiper-slide"><img src="https://res.cloudinary.com/dcsjgrfb8/image/upload/v1750862204/fundaci%C3%B3n-Atlantida_g5dfcu.webp" alt="Fundación Atlantida"></div>
       <div class="swiper-slide"><img src="https://res.cloudinary.com/dcsjgrfb8/image/upload/v1750862203/Electrolact-medic_mvs4ik.webp" alt="Electrolact Medic"></div>
 
