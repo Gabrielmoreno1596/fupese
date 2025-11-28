@@ -4,19 +4,14 @@ deployment:
     - |
       set -e
 
-      # AJUSTA ESTA RUTA al document root real
-      DEPLOYPATH=/home/fupeseco/public_html   # <-- o /home/fupeseco/public_html/fupese
+      # Log sencillo para verificar que el deploy corrió
+      echo "Iniciando deploy: $(date)" >> /home/fupeseco/deploy-debug.log
 
-      echo "Repositorio: $(pwd)"
-      echo "Destino: $DEPLOYPATH"
-
-      # Marca de prueba
-      echo "Último deploy: $(date)" > "$DEPLOYPATH/deploy-info.txt"
-
+      # Sincronizar el repo hacia public_html
       rsync -av --delete \
         --exclude='.git' \
         --exclude='.gitignore' \
         --exclude='.cpanel.yml' \
         --exclude='README_*' \
         --exclude='error_log' \
-        ./ "$DEPLOYPATH"
+        /home/fupeseco/repositories/fupese/ /home/fupeseco/public_html/
