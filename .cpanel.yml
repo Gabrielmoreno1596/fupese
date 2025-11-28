@@ -4,10 +4,14 @@ deployment:
     - |
       set -e
 
-      DEPLOYPATH=/home/fupeseco/public_html
+      # OJO: ajusta esta ruta según el docroot real que muestre cPanel
+      DEPLOYPATH=/home/fupeseco/public_html/fupese
 
       echo "Repositorio: $(pwd)"
       echo "Destino: $DEPLOYPATH"
+
+      # Marca de prueba (útil para verificar que se copió)
+      echo "Último deploy: $(date)" > "$DEPLOYPATH/deploy-info.txt"
 
       rsync -av --delete \
         --exclude='.git' \
