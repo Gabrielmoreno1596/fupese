@@ -1,16 +1,26 @@
 ---
 deployment:
   tasks:
-    - >
+    - |
+      set -e
+
+      # Ajusta "fupeseco" a tu usuario real de cPanel
+      DEPLOYPATH=/home/fupeseco/public_html
+
+      echo "Directorio actual: $(pwd)"
+      echo "Destino: $DEPLOYPATH"
+
+      # 1. Instalar dependencias PHP con Composer
       if command -v composer >/dev/null 2>&1; then
-        composer install --no-dev --optimize-autoloader;
+        composer install --no-dev --optimize-autoloader
       elif [ -x /opt/cpanel/composer/bin/composer ]; then
-        /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader;
+        /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
       else
-        echo "Composer no está disponible" >&2; exit 1;
+        echo "Composer no está disponible" >&2
+        exit 1
       fi
 
-    - >
+      # 2. Sincronizar código hacia public_html
       rsync -av --delete \
         --exclude='.git' \
         --exclude='.gitignore' \
@@ -18,4 +28,4 @@ deployment:
         --exclude='README_*' \
         --exclude='error_log' \
         --exclude='config/mail.php' \
-        ./ "/home/fupeseco/public_html"
+        ./ "$DEPLOYPATH"
