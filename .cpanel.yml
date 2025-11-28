@@ -2,16 +2,37 @@
 deployment:
   tasks:
     - |
-      set -e
+      {
+        echo "===== DEPLOY $(date) ====="
+        echo "PWD: $(pwd)"
 
-      # Log sencillo para verificar que el deploy corrió
-      echo "Iniciando deploy: $(date)" >> /home/fupeseco/deploy-debug.log
+        echo "Contenido del repositorio:"
+        ls -la
 
-      # Sincronizar el repo hacia public_html
-      rsync -av --delete \
-        --exclude='.git' \
-        --exclude='.gitignore' \
-        --exclude='.cpanel.yml' \
-        --exclude='README_*' \
-        --exclude='error_log' \
-        /home/fupeseco/repositories/fupese/ /home/fupeseco/public_html/
+        echo "Contenido de /home/fupeseco/public_html ANTES:"
+        ls -la /home/fupeseco/public_html || echo "No se pudo listar public_html"
+
+        # 1) ¿Existe rsync?
+        echo "Buscando rsync..."
+        if command -v rsync >/dev/null 2>&1; then
+          echo "rsync encontrado, usando rsync..."
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.gitignore' \
+            --exclude='.cpanel.yml' \
+            --exclude='README_*' \
+            --exclude='error_log' \
+            /home/fupeseco/repositories/fupese/ /home/fupeseco/public_html/
+          echo "rsync terminó con código: $?"
+        else
+          echo "rsync NO está disponible, usando cp -a como alternativa..."
+          mkdir -p /home/fupeseco/public_html/
+          cp -a /home/fupeseco/repositories/fupese/. /home/fupeseco/public_html/
+          echo "cp -a terminó con código: $?"
+        fi
+
+        echo "Contenido de /home/fupeseco/public_html DESPUÉS:"
+        ls -la /home/fupeseco/public_html || echo "No se pudo listar public_html"
+
+        echo "===== FIN DEPLOY ====="
+      } >> /home/fupeseco/deploy-debug.log 2>&1
