@@ -1,26 +1,26 @@
----
-deployment:
-  tasks:
-    # Ruta de despliegue en cPanel (ajusta con tu usuario si cambia la home)
-    - export DEPLOYPATH=/home/$USER/public_html/
+name: Deploy a cPanel por FTP
 
-    # Instala dependencias PHP (usa Composer de cPanel si está disponible)
-    - >
-      if command -v composer >/dev/null 2>&1; then
-        composer install --no-dev --optimize-autoloader;
-      elif [ -x /opt/cpanel/composer/bin/composer ]; then
-        /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader;
-      else
-        echo "Composer no está disponible" >&2; exit 1;
-      fi
+on:
+  push:
+    branches:
+      - main
 
-    # Sincroniza el código hacia el public_html sin sobrescribir tu config local
-    - >
-      rsync -av --delete \
-        --exclude='.git' \
-        --exclude='.gitignore' \
-        --exclude='.cpanel.yml' \
-        --exclude='README_*' \
-        --exclude='error_log' \
-        --exclude='config/mail.php' \
-        ./ "$DEPLOYPATH"
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Subir archivos por FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/fupese/
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
