@@ -4,28 +4,31 @@ deployment:
     - |
       set -e
 
-      # Ajusta "fupeseco" a tu usuario real de cPanel
+      # Ajusta la ruta de destino según tu dominio
       DEPLOYPATH=/home/fupeseco/public_html
 
-      echo "Directorio actual: $(pwd)"
+      echo "Repositorio: $(pwd)"
       echo "Destino: $DEPLOYPATH"
 
-      # 1. Instalar dependencias PHP con Composer
-      if command -v composer >/dev/null 2>&1; then
-        composer install --no-dev --optimize-autoloader
-      elif [ -x /opt/cpanel/composer/bin/composer ]; then
-        /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
+      # 1) Instalar dependencias PHP con Composer (si hay composer.json)
+      if [ -f composer.json ]; then
+        if command -v composer >/dev/null 2>&1; then
+          composer install --no-dev --optimize-autoloader
+        elif [ -x /opt/cpanel/composer/bin/composer ]; then
+          /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
+        else
+          echo "Composer no está disponible" >&2
+          exit 1
+        fi
       else
-        echo "Composer no está disponible" >&2
-        exit 1
+        echo "No hay composer.json, se omite Composer"
       fi
 
-      # 2. Sincronizar código hacia public_html
+      # 2) Sincronizar código al public_html
       rsync -av --delete \
         --exclude='.git' \
         --exclude='.gitignore' \
         --exclude='.cpanel.yml' \
         --exclude='README_*' \
         --exclude='error_log' \
-        --exclude='config/mail.php' \
         ./ "$DEPLOYPATH"
