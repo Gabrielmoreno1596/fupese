@@ -1,26 +1,31 @@
-name: Deploy a cPanel por FTP
+---
+deployment:
+  tasks:
+    - |
+      set -e
 
-on:
-  push:
-    branches:
-      - main
+      # Ajusta "fupeseco" a tu usuario real de cPanel
+      DEPLOYPATH=/home/fupeseco/public_html
 
-jobs:
-  ftp-deploy:
-    runs-on: ubuntu-latest
+      echo "Directorio actual: $(pwd)"
+      echo "Destino: $DEPLOYPATH"
 
-    steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
+      # 1. Instalar dependencias PHP con Composer
+      if command -v composer >/dev/null 2>&1; then
+        composer install --no-dev --optimize-autoloader
+      elif [ -x /opt/cpanel/composer/bin/composer ]; then
+        /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
+      else
+        echo "Composer no está disponible" >&2
+        exit 1
+      fi
 
-      - name: Subir archivos por FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/fupese/
-          exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
+      # 2. Sincronizar código hacia public_html
+      rsync -av --delete \
+        --exclude='.git' \
+        --exclude='.gitignore' \
+        --exclude='.cpanel.yml' \
+        --exclude='README_*' \
+        --exclude='error_log' \
+        --exclude='config/mail.php' \
+        ./ "$DEPLOYPATH"
